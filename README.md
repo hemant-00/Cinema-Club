@@ -24,6 +24,8 @@ Since this project relies entirely on frontend technologies with no build steps 
 
 1.  **Download** the `index.html` file.
 2.  **Open** the file directly in any modern web browser (Chrome, Firefox, Edge, Safari).
+   OR
+just go to  https://cinepicks-iitr.netlify.app/
 
 Alternatively, you can host it via **VS Code Live Server** or GitHub Pages.
 
