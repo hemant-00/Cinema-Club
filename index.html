@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cinema Club | IIT Roorkee</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root {
+    --bg: #0f172a;
+    --card: #020617;
+    --text: #ffffff;
+    --secondary: #94a3b8;
+    --accent: #2563eb;
+}
+
+.light {
+    --bg: #f1f5f9;
+    --card: #ffffff;
+    --text: #020617;
+    --secondary: #475569;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.3s;
+}
+
+/* Header */
+
+
+
+header {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+    color: white;
+}
+
+header h1 {
+    font-size: 2.5rem;
+}
+
+header p {
+    margin-top: 8px;
+}
+
+/* Top Bar */
+
+.top-bar {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.search-box input {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    width: 220px;
+}
+
+.toggle-btn {
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Filter */
+
+.filter-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.filter-section button {
+    background: var(--card);
+    color: var(--text);
+    border: none;
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.filter-section button.active,
+.filter-section button:hover {
+    background: var(--accent);
+    color: white;
+}
+
+/* Movies */
+
+.movies-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+/* Card */
+
+.movie-card {
+    background: var(--card);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+.movie-card:hover {
+    transform: translateY(-6px);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 330px;
+    object-fit: contain;
+    background: black;
+}
+
+.movie-info {
+    padding: 15px;
+}
+
+.movie-info h3 {
+    margin-bottom: 5px;
+}
+
+.movie-info span {
+    font-size: 0.85rem;
+    color: var(--secondary);
+}
+
+.movie-info p {
+    font-size: 0.9rem;
+    margin: 8px 0;
+}
+
+/* Rating */
+
+.rating span {
+    font-size: 20px;
+    cursor: pointer;
+    color: #64748b;
+}
+
+.rating span.active {
+    color: gold;
+}
+
+/* Buttons */
+
+.trailer-btn {
+    margin-top: 10px;
+    background: var(--accent);
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+/* Modal */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: black;
+    width: 90%;
+    max-width: 700px;
+    aspect-ratio: 16/9;
+    position: relative;
+}
+
+.modal iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.close {
+    position: absolute;
+    top: -35px;
+    right: 0;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* Footer */
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background: var(--card);
+    margin-top: 40px;
+    font-size: 0.9rem;
+    color: var(--secondary);
+}
+
+/* Mobile */
+
+@media (max-width:600px){
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .search-box input {
+        width: 100%;
+    }
+
+    .top-bar {
+        flex-direction: column;
+    }
+}
+/* Preview Modal */
+
+.preview-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.preview-box {
+    background: #020617;
+    width: 90%;
+    max-width: 900px;
+    display: flex;
+    gap: 25px;
+    padding: 25px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.preview-left img {
+    width: 260px;
+    aspect-ratio: 2 / 3;
+    object-fit: contain;
+    background: black;
+    border-radius: 10px;
+}
+
+.preview-right {
+    flex: 1;
+}
+
+.preview-right h2 {
+    margin-bottom: 8px;
+}
+
+.preview-right p {
+    margin: 10px 0;
+    color: #cbd5f5;
+}
+
+.preview-btn {
+    display: inline-block;
+    margin-top: 15px;
+    background: #2563eb;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+.preview-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+}
+
+/* Mobile */
+
+@media(max-width:700px){
+
+    .preview-box{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .preview-left img{
+        width: 200px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="https://cinemaclub.iitr.ac.in/static/media/logo.931fccf50706aec87e94.png" alt="Cinema Club Logo" class="logo">
+    <h1>🎬 CinePicks</h1>
+    <p>Movie Recommendation</p>
+</header>
+
+
+
+<!-- Top Controls -->
+
+<div class="top-bar">
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search movies...">
+    </div>
+
+    <button class="toggle-btn" onclick="toggleTheme()">🌙 Toggle Mode</button>
+
+</div>
+
+
+<!-- Filters -->
+
+<div class="filter-section">
+
+    <button class="active" onclick="filterMovies('all',this)">All</button>
+    <button onclick="filterMovies('Drama',this)">Drama</button>
+    <button onclick="filterMovies('Sci-Fi',this)">Sci-Fi</button>
+    <button onclick="filterMovies('Action',this)">Action</button>
+    <button onclick="filterMovies('Romance',this)">Romance</button>
+    <button onclick="filterMovies('Thriller',this)">Thriller</button>
+
+</div>
+
+
+<!-- Movies -->
+
+<section class="movies-container" id="movies">
+
+<!-- Movie -->
+
+<div class="movie-card" data-genre="Action" data-title="dhurandhar">
+
+<img src="https://upload.wikimedia.org/wikipedia/en/c/ce/Dhurandhar_poster.jpg">
+
+<div class="movie-info">
+
+<h3>Dhurandhar</h3>
+<span>Action | 2025</span>
+
+<p>A mysterious traveler slips into the heart of Karachi's underbelly and rises through its ranks with lethal precision, only to tear the notorious ISI-Underworld nexus apart from within.</p>
+
+<div class="rating">
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+</div>
+
+<a 
+  href="https://www.youtube.com/watch?v=BKOVzHcjEIo" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="trailer-btn"
+>
+  Watch Trailer
+</a>
+
+
+</div>
+</div>
+
+
+<div class="movie-card" data-genre="Sci-Fi" data-title="interstellar">
+
+<img src="https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg">
+
+<div class="movie-info">
+
+<h3>Interstellar</h3>
+<span>Sci-Fi | 2014</span>
+
+<p>When Earth becomes uninhabitable in the future, a farmer and ex-NASA pilot, Joseph Cooper, is tasked to pilot a spacecraft, along with a team of researchers, to find a new planet for humans.</p>
+
+<div class="rating">
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+</div>
+
+<a 
+  href="https://www.youtube.com/watch?v=zSWdZVtXT7E" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="trailer-btn"
+>
+  Watch Trailer
+</a>
+
+</div>
+</div>
+
+
+<div class="movie-card" data-genre="Thriller" data-title="el camino">
+
+<img src="https://upload.wikimedia.org/wikipedia/en/4/4e/El_camino_bb_film_poster.jpg">
+
+<div class="movie-info">
+
+<h3>El Camino: A Breaking Bad Movie</h3>
+<span>Thriller | 2019</span>
+
+<p>Fugitive Jesse Pinkman runs from his captors, the law, and his past.</p>
+
+<div class="rating">
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+</div>
+
+<a 
+  href="https://www.youtube.com/watch?v=1JLUn2DFW4w" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="trailer-btn"
+>
+  Watch Trailer
+</a>
+
+</div>
+</div>
+
+<div class="movie-card" data-genre="Drama" data-title="the sawshank redemption">
+
+<img src="https://upload.wikimedia.org/wikipedia/en/8/81/ShawshankRedemptionMoviePoster.jpg">
+
+<div class="movie-info">
+
+<h3>The Shawshank Redemptiona</h3>
+<span>Drama | 1994</span>
+
+<p>A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion.</p>
+
+<div class="rating">
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+</div>
+
+<a 
+  href="https://www.youtube.com/watch?v=PLl99DlL6b4" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="trailer-btn"
+>
+  Watch Trailer
+</a>
+
+
+</div>
+</div>
+
+<div class="movie-card" data-genre="Romance" data-title="the notebook">
+
+<img src="https://upload.wikimedia.org/wikipedia/en/8/86/Posternotebook.jpg">
+
+<div class="movie-info">
+
+<h3>The Notebook</h3>
+<span>Romance | 2004</span>
+
+<p>An elderly man reads to a woman with dementia the story of two young lovers whose romance is threatened by the difference in their respective social classes.</p>
+
+<div class="rating">
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+<span onclick="rate(this)">★</span>
+</div>
+
+<a 
+  href="https://www.youtube.com/watch?v=BjJcYdEOI0k" 
+  target="_blank" 
+  rel="noopener noreferrer"
+  class="trailer-btn"
+>
+  Watch Trailer
+</a>
+
+
+</div>
+</div>
+
+
+</section>
+
+
+<!-- Modal -->
+
+<div class="modal" id="trailerModal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeTrailer()">✖</span>
+
+<iframe id="trailerFrame"
+allowfullscreen></iframe>
+
+</div>
+
+</div>
+
+
+<!-- Footer -->
+
+<footer class="site-footer">
+
+  <div class="footer-container">
+
+    <!-- About -->
+    <div class="footer-section">
+      <h3>🎬 Cinema Club</h3>
+      <p>
+        IIT Roorkee’s official movie community, bringing
+        great stories, discussions, and screenings together.
+      </p>
+    </div>
+
+
+
+    <!-- Social -->
+    <div class="footer-section">
+      <h4>Follow Us</h4>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/cinema_club_iitr"target="_blank">Instagram</a>
+        <a href="https://in.linkedin.com/company/cinema-club-iitr"target="_blank">LinkedIn</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 Cinema Club | IIT Roorkee • Made with ❤️ by @unfunny
+  </div>
+
+</footer>
+
+
+
+<script>
+
+/* Filter */
+
+function filterMovies(genre,btn){
+
+let cards = document.querySelectorAll(".movie-card");
+let buttons = document.querySelectorAll(".filter-section button");
+
+buttons.forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+
+cards.forEach(card=>{
+
+if(genre==="all" || card.dataset.genre===genre){
+    card.style.display="block";
+}else{
+    card.style.display="none";
+}
+
+});
+}
+
+
+/* Search */
+
+document.getElementById("searchInput").addEventListener("input",function(){
+
+let val = this.value.toLowerCase();
+let cards = document.querySelectorAll(".movie-card");
+
+cards.forEach(card=>{
+
+let title = card.dataset.title;
+
+if(title.includes(val)){
+    card.style.display="block";
+}else{
+    card.style.display="none";
+}
+
+});
+
+});
+
+
+/* Rating */
+
+function rate(star){
+
+let stars = star.parentElement.children;
+
+for(let i=0;i<stars.length;i++){
+    stars[i].classList.remove("active");
+}
+
+let index = [...stars].indexOf(star);
+
+for(let i=0;i<=index;i++){
+    stars[i].classList.add("active");
+}
+
+}
+
+
+/* Trailer */
+
+function openTrailer(link){
+
+let modal = document.getElementById("trailerModal");
+let frame = document.getElementById("trailerFrame");
+
+frame.src = link + "?autoplay=1";
+modal.style.display="flex";
+
+}
+
+function closeTrailer(){
+
+let modal = document.getElementById("trailerModal");
+let frame = document.getElementById("trailerFrame");
+
+frame.src="";
+modal.style.display="none";
+
+}
+
+
+/* Dark Mode */
+
+function toggleTheme(){
+    document.body.classList.toggle("light");
+}
+/* Preview Modal */
+
+function openPreview(card){
+
+    let modal = document.getElementById("previewModal");
+
+    let img = card.querySelector("img").src;
+
+    let title = card.querySelector("h3").innerText;
+
+    let meta = card.querySelector("span").innerText;
+
+    let desc = card.dataset.desc;
+
+    let trailer = card.dataset.trailer;
+
+
+    document.getElementById("previewImg").src = img;
+    document.getElementById("previewTitle").innerText = title;
+    document.getElementById("previewMeta").innerText = meta;
+    document.getElementById("previewDesc").innerText = desc;
+    document.getElementById("previewTrailer").href = trailer;
+
+    modal.style.display = "flex";
+}
+
+
+function closePreview(){
+
+    document.getElementById("previewModal").style.display = "none";
+
+}
+
+</script>
+
+<!-- Preview Modal -->
+
+<div class="preview-modal" id="previewModal">
+
+  <div class="preview-box">
+
+    <span class="preview-close" onclick="closePreview()">✖</span>
+
+    <div class="preview-left">
+      <img id="previewImg">
+    </div>
+
+    <div class="preview-right">
+
+      <h2 id="previewTitle"></h2>
+
+      <p id="previewMeta"></p>
+
+      <p id="previewDesc"></p>
+
+      <a id="previewTrailer"
+         target="_blank"
+         class="preview-btn">
+         ▶ Watch Trailer
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+</body>
+</html>
